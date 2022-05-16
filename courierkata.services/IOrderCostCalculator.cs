@@ -5,6 +5,6 @@ namespace courierkata.services
 {
     public interface IOrderCostCalculator
     {
-        OrderCost GetInfoForOrder(List<Parcel> parcels);
+        OrderCost GetInfoForOrder(List<Parcel> parcels, bool speedyDelivery);
     }
 }

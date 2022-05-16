@@ -6,22 +6,22 @@ namespace courierkata.services
     {
         // Total price of the order
         public int TotalPrice { get; set; } 
+        public int TotalWeight { get; set; }
+
+        public int SpeedyDeliveryCost { get; set; }
+
+        public ParcelsCollectionInfo SmallParcelsCollectionFromOrder { get; } 
+        public ParcelsCollectionInfo MediumParcelsCollectionFromOrder { get; } 
+        public ParcelsCollectionInfo LargeParcelsCollectionFromOrder { get; } 
+        public ParcelsCollectionInfo XLParcelsCollectionFromOrder { get; } 
+
         // Price by dimension, the keys are s, m, l or xl
-        public Dictionary<string, ParcelSizeInfoInOrder> ParcelsInfo { get; set; }
         public OrderCost()
         {
-            ParcelsInfo = new Dictionary<string, ParcelSizeInfoInOrder>(){
-                {"s", new ParcelSizeInfoInOrder()},
-                {"m", new ParcelSizeInfoInOrder()},
-                {"l", new ParcelSizeInfoInOrder()},
-                {"xl", new ParcelSizeInfoInOrder()}
-            };
+            SmallParcelsCollectionFromOrder = new SmallParcelsCollectionInfo(3,1, 2);
+            MediumParcelsCollectionFromOrder = new MediumParcelsCollectionInfo(8,3,2);
+            LargeParcelsCollectionFromOrder = new LargeParcelsCollectionInfo(15,6,2);
+            XLParcelsCollectionFromOrder = new XLParcelsCollectionInfo(25,10,2);
         }
-    }
-    
-    public class ParcelSizeInfoInOrder
-    {
-        public int TotalPrice { get; set; } 
-        public int Count { get; set; }
     }
 }

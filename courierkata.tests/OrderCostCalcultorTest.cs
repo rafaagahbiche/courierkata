@@ -64,5 +64,14 @@ namespace courierkata.tests
             Assert.AreEqual(8*2, orderCost.MediumParcelsCollection.TotalPrice);
             Assert.AreEqual(15*2, orderCost.LargeParcelsCollection.TotalPrice);
         }
+
+        [TestMethod]
+        public void GetInfoForOrderHeavyParcels()
+        {
+            // medium heavy parcel
+            var heavyOrder = new List<Parcel>() {(new Parcel() { Dimension = 20, Weight = 100})};
+            var orderCost = MyOrderCostCalculator.GetInfoForOrder(heavyOrder, false);
+            Assert.AreEqual(8 + 50, orderCost.TotalPrice);
+        }
     }
 }

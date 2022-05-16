@@ -46,6 +46,13 @@ namespace courierkata.tests
         }
 
         [TestMethod]
+        public void GetInfoForOrderSpeedyDelivery()
+        {
+            var orderCost = MyOrderCostCalculator.GetInfoForOrder(MyFirstOrderParcels, true);
+            Assert.AreEqual(6, orderCost.SpeedyDeliveryCost);
+        }
+
+        [TestMethod]
         public void GetInfoForOrderManyParcels()
         {
             var orderCost = MyOrderCostCalculator.GetInfoForOrder(MyMultipleParcels, false);

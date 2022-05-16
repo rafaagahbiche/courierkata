@@ -10,10 +10,14 @@ namespace courierkata.tests
         public List<Parcel> MyFirstOrderParcels { get; set; }
         public List<Parcel> MyMultipleParcels { get; set; }
         public OrderCostCalculator MyOrderCostCalculator { get; set; }
+        public ParcelsManager MyParcelsManager { get; set; }
+        public ParcelsCollectionInfoFactory MyParcelsCollectionInfoFactory { get; set; }
 
         public OrderCostCalcultorTest()
         {
-            MyOrderCostCalculator = new OrderCostCalculator();
+            MyParcelsCollectionInfoFactory = new ParcelsCollectionInfoFactory();
+            MyParcelsManager = new ParcelsManager(MyParcelsCollectionInfoFactory);
+            MyOrderCostCalculator = new OrderCostCalculator(MyParcelsManager);
             MyFirstOrderParcels = new List<Parcel>() {
                 new Parcel(){
                     Dimension = 1
@@ -41,8 +45,8 @@ namespace courierkata.tests
         {
             var orderCost = MyOrderCostCalculator.GetInfoForOrder(MyFirstOrderParcels, false);
             Assert.AreEqual(3, orderCost.TotalPrice);
-            Assert.AreEqual(3, orderCost.SmallParcelsCollectionFromOrder.TotalPrice);
-            Assert.AreEqual(1, orderCost.SmallParcelsCollectionFromOrder.Count);
+            Assert.AreEqual(3, orderCost.SmallParcelsCollection.TotalPrice);
+            Assert.AreEqual(1, orderCost.SmallParcelsCollection.Count);
         }
 
         [TestMethod]
@@ -57,8 +61,8 @@ namespace courierkata.tests
         {
             var orderCost = MyOrderCostCalculator.GetInfoForOrder(MyMultipleParcels, false);
             Assert.AreEqual(46, orderCost.TotalPrice);
-            Assert.AreEqual(8*2, orderCost.MediumParcelsCollectionFromOrder.TotalPrice);
-            Assert.AreEqual(15*2, orderCost.LargeParcelsCollectionFromOrder.TotalPrice);
+            Assert.AreEqual(8*2, orderCost.MediumParcelsCollection.TotalPrice);
+            Assert.AreEqual(15*2, orderCost.LargeParcelsCollection.TotalPrice);
         }
     }
 }

@@ -5,65 +5,25 @@ namespace courierkata.services
 {
     public class OrderCostCalculator: IOrderCostCalculator
     {
-        private void addPriceToParcelsCollection(
-            Parcel parcel,
-            OrderCost orderCost, 
-            ParcelsCollectionInfo parcelsCollection)
+        private readonly ParcelsManager _parcelsManager;
+
+        public OrderCostCalculator(ParcelsManager parcelsManager)
         {
-            orderCost.TotalPrice += parcelsCollection.UnitPrice;
-            parcelsCollection.TotalPrice += parcelsCollection.UnitPrice;
-            parcelsCollection.Count++;
-            if (parcel.Weight > parcelsCollection.WeightLimit)
-            {
-                var extraForWeight = parcelsCollection.ExtraWeightPrice * (parcel.Weight - parcelsCollection.WeightLimit);
-                parcelsCollection.TotalPrice += extraForWeight;
-                orderCost.TotalPrice += extraForWeight;
-            }
+            _parcelsManager = parcelsManager;
         }
 
-        public OrderCost GetInfoForOrder(List<Parcel> parcels, bool speedyDelivery)
+        public ParcelsManager GetInfoForOrder(List<Parcel> parcels, bool speedyDelivery)
         {
-            var orderCost = new OrderCost();
             foreach(var parcel in parcels)
             {
-                if (parcel.Dimension > 0)
-                {
-                    if (parcel.Dimension < 10)
-                    {
-                        addPriceToParcelsCollection(
-                            parcel,
-                            orderCost, 
-                            orderCost.SmallParcelsCollectionFromOrder);
-                    }
-                    else if (parcel.Dimension < 50)
-                    {
-                        addPriceToParcelsCollection(
-                            parcel,
-                            orderCost, 
-                            orderCost.MediumParcelsCollectionFromOrder);
-                    }
-                    else if (parcel.Dimension < 100)
-                    {
-                        addPriceToParcelsCollection(
-                            parcel,
-                            orderCost, 
-                            orderCost.LargeParcelsCollectionFromOrder);
-                    }
-                    else if(parcel.Dimension >= 100)
-                    {
-                        addPriceToParcelsCollection(
-                            parcel,
-                            orderCost, 
-                            orderCost.XLParcelsCollectionFromOrder);
-                    } 
-                }
+                _parcelsManager.AddParcelCost(parcel);
                 if (speedyDelivery)
                 {
-                    orderCost.SpeedyDeliveryCost = orderCost.TotalPrice*2;
+                    _parcelsManager.SpeedyDeliveryCost = _parcelsManager.TotalPrice*2;
                 }
             }
 
-            return orderCost;
+            return _parcelsManager;
         }        
     }
 }

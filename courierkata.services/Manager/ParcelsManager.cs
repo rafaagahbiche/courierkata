@@ -6,45 +6,12 @@ namespace courierkata.services
     {
         private readonly IParcelsCollectionInfoFactory _parcelsCollectionInfoFactory;
         // Total price of the order
-        public int TotalPrice { get; set; } 
-        public int TotalWeight { get; set; }
-        public int SpeedyDeliveryCost { get; set; }
-
-        public ParcelsCollectionInfo SmallParcelsCollection 
-        { 
-            get 
-            {
-                return _parcelsCollectionInfoFactory.GetParcelsCollectionInfoByLabel("S"); 
-            }
-        }
-        
-        public ParcelsCollectionInfo MediumParcelsCollection 
-        { 
-            get 
-            {
-                return _parcelsCollectionInfoFactory.GetParcelsCollectionInfoByLabel("M"); 
-            }
-        }
-
-        public ParcelsCollectionInfo LargeParcelsCollection 
-        { 
-            get 
-            {
-                return _parcelsCollectionInfoFactory.GetParcelsCollectionInfoByLabel("L"); 
-            }
-        }
-        
-        public ParcelsCollectionInfo XLParcelsCollection 
-        { 
-            get 
-            {
-                return _parcelsCollectionInfoFactory.GetParcelsCollectionInfoByLabel("XL"); 
-            }
-        }
+        public OrderCostInfo OrderCostInfo { get; }
         
         public ParcelsManager(IParcelsCollectionInfoFactory parcelsCollectionInfoFactory)
         {
             _parcelsCollectionInfoFactory = parcelsCollectionInfoFactory;
+            OrderCostInfo = new OrderCostInfo();
         }
 
         public void AddParcelCost(Parcel parcel)
@@ -53,14 +20,57 @@ namespace courierkata.services
                 parcel.Dimension, 
                 parcel.Weight);
 
-            parcelsCollection.Count++;
-            parcelsCollection.TotalPrice += parcelsCollection.UnitPrice;
-            TotalPrice += parcelsCollection.UnitPrice;
+            AddCostToParcelsCollectionPrice(parcelsCollection.UnitPrice, parcelsCollection.SizeLabel, true);
+            OrderCostInfo.TotalPrice += parcelsCollection.UnitPrice;
             if (parcel.Weight > parcelsCollection.WeightLimit)
             {
                 var extraForWeight = parcelsCollection.ExtraWeightPrice * (parcel.Weight - parcelsCollection.WeightLimit);
-                parcelsCollection.TotalPrice += extraForWeight;
-                TotalPrice += extraForWeight;
+                AddCostToParcelsCollectionPrice(extraForWeight, parcelsCollection.SizeLabel, false);
+                OrderCostInfo.TotalPrice += extraForWeight;
+            }
+        }
+
+        private void AddCostToParcelsCollectionPrice(int price, string sizeLabel, bool incCount)
+        {
+            switch (sizeLabel)
+            {
+                case "S": 
+                {
+                    OrderCostInfo.SmallParcelsCollection.TotalPrice += price;
+                    if (incCount) 
+                    {
+                        OrderCostInfo.SmallParcelsCollection.Count++;
+                    }
+                    return;
+                };
+                case "M": 
+                {
+                    OrderCostInfo.MediumParcelsCollection.TotalPrice += price;
+                    if (incCount) 
+                    {
+                        OrderCostInfo.MediumParcelsCollection.Count++;
+                    }
+                    return;
+                };
+                case "L": 
+                {
+                    OrderCostInfo.LargeParcelsCollection.TotalPrice += price;
+                    if (incCount) 
+                    {
+                        OrderCostInfo.LargeParcelsCollection.Count++;
+                    }
+                    return;
+                };
+                case "XL": 
+                {
+                    OrderCostInfo.XLParcelsCollection.TotalPrice += price;
+                    if (incCount) 
+                    {
+                        OrderCostInfo.XLParcelsCollection.Count++;
+                    }
+                    return;
+                };
+                default : return;
             }
         }
     }

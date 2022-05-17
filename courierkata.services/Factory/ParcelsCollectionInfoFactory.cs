@@ -35,8 +35,8 @@ namespace courierkata.services
                 case "XL": return _xlParcelsCollectionInfo;
                 default : return _parcelsCollectionInfo;
             }
-             
         }
+        
         public ParcelsCollectionInfo CreateOrGetExistingParcelsCollectionInfo(
             int dimension,
             int weight)

@@ -6,8 +6,6 @@ namespace courierkata.services
         public int WeightLimit { get; set; }
         public int ExtraWeightPrice { get; set; }
         public string SizeLabel { get; set; }
-        public int TotalPrice { get; set; } 
-        public int Count { get; set; }
         public ParcelsCollectionInfo(int unitPrice, int weightLimit, int extraWeightPrice)
         {
             UnitPrice = unitPrice;
@@ -21,7 +19,7 @@ namespace courierkata.services
         public SmallParcelsCollectionInfo(int unitPrice, int weightLimit, int extraWeightPrice)
             : base(unitPrice, weightLimit, extraWeightPrice)
         {
-            SizeLabel = "Small";
+            SizeLabel = "S";
         }
     }
 
@@ -30,7 +28,7 @@ namespace courierkata.services
         public MediumParcelsCollectionInfo(int unitPrice, int weightLimit, int extraWeightPrice)
             : base(unitPrice, weightLimit, extraWeightPrice)
         {
-            SizeLabel = "Medium";
+            SizeLabel = "M";
         }
     }
 
@@ -39,10 +37,7 @@ namespace courierkata.services
         public LargeParcelsCollectionInfo(int unitPrice, int weightLimit, int extraWeightPrice)
             : base(unitPrice, weightLimit, extraWeightPrice)
         {
-            SizeLabel = "Large";
-            // UnitPrice = unitPrice;
-            // WeightLimit = weightLimit;
-            // ExtraWeightPrice = extraWeightPrice;
+            SizeLabel = "L";
         }
     }
 
@@ -52,9 +47,6 @@ namespace courierkata.services
             : base(unitPrice, weightLimit, extraWeightPrice)
         {
             SizeLabel = "XL";
-            // UnitPrice = unitPrice;
-            // WeightLimit = weightLimit;
-            // ExtraWeightPrice = extraWeightPrice;
         }
     }
 }

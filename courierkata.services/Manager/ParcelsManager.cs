@@ -14,6 +14,21 @@ namespace courierkata.services
             OrderCostInfo = new OrderCostInfo();
         }
 
+        public OrderCostInfo GetOrderCostInfo(List<Parcel> parcels, bool speedyDelivery)
+        {
+            foreach(var parcel in parcels)
+            {
+                AddParcelCost(parcel);
+            }
+
+            if (speedyDelivery)
+            {
+                OrderCostInfo.SpeedyDeliveryCost = OrderCostInfo.TotalPrice*2;
+            }
+
+            return OrderCostInfo;
+        }
+
         public void AddParcelCost(Parcel parcel)
         {
             var parcelsCollection = _parcelsCollectionInfoFactory.CreateOrGetExistingParcelsCollectionInfo(
